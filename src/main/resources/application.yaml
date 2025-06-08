@@ -1,0 +1,27 @@
+server:
+  port: 9075
+
+spring:
+  application:
+    name: kubelet-metrics-connector
+  main:
+    banner-mode: "off"
+  codec:
+    max-in-memory-size: 1GB
+
+logging:
+  file:
+    name: ${spring.application.name}.log
+
+app:
+  config:
+    http-client:
+      connectTimeout: 60000
+      readTimeout: 60000
+      writeTimeout: 60000
+    kubelet:
+      baseUrl: https://localhost:10250
+      metricsUrl: /metrics
+      metricsCadvisorUrl: /metrics/cadvisor
+      metricsResourceUrl: /metrics/resource
+      token: prometheus-kubelet-token
