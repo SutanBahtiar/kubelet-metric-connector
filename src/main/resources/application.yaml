@@ -20,8 +20,10 @@ app:
       readTimeout: 60000
       writeTimeout: 60000
     kubelet:
-      baseUrl: https://localhost:10250
+      baseSandboxUrl: https://localhost:10250
+      baseProductionUrl: https://localhost:10250
       metricsUrl: /metrics
       metricsCadvisorUrl: /metrics/cadvisor
       metricsResourceUrl: /metrics/resource
-      token: prometheus-kubelet-token
+      sandboxToken: prometheus-kubelet-token
+      productionToken: prometheus-kubelet-token

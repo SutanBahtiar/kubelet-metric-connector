@@ -9,7 +9,8 @@ public class RouteUrl {
         throw new IllegalStateException();
     }
 
-    public static final String BASE_URL = "/kubelet-metrics";
+    public static final String BASE_URL_SANDBOX = "/kubelet-metrics/sandbox";
+    public static final String BASE_URL_PRODUCTION = "/kubelet-metrics/production";
     public static final String METRICS_URL = "/metrics";
     public static final String METRICS_CADVISOR_URL = "/metrics/cadvisor";
     public static final String METRICS_RESOURCE_URL = "/metrics/resource";

@@ -1,0 +1,25 @@
+2025-06-08 15:07:02.146  INFO 21484 --- [main] c.g.s.KubeletMetricsConnector            : Starting KubeletMetricsConnector using Java 11.0.18 on ITBP-SUTAN23 with PID 21484 (C:\devops\repo\java\kubelet-metrics-connector\target\classes started by sutan.bahtiar in C:\devops\repo\java\kubelet-metrics-connector)
+2025-06-08 15:07:02.155  INFO 21484 --- [main] c.g.s.KubeletMetricsConnector            : No active profile set, falling back to 1 default profile: "default"
+2025-06-08 15:07:03.948  WARN 21484 --- [main] onfigReactiveWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'kubeletMetricProductionHandler' defined in file [C:\devops\repo\java\kubelet-metrics-connector\target\classes\com\github\sutanbahtiar\handler\KubeletMetricProductionHandler.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.github.sutanbahtiar.service.KubeletProductionClientService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2025-06-08 15:07:03.968  INFO 21484 --- [main] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-06-08 15:07:04.008 ERROR 21484 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.github.sutanbahtiar.handler.KubeletMetricProductionHandler required a bean of type 'com.github.sutanbahtiar.service.KubeletProductionClientService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.github.sutanbahtiar.service.KubeletProductionClientService' in your configuration.
+
+2025-06-08 15:08:36.688  INFO 21020 --- [main] c.g.s.KubeletMetricsConnector            : Starting KubeletMetricsConnector using Java 11.0.18 on ITBP-SUTAN23 with PID 21020 (C:\devops\repo\java\kubelet-metrics-connector\target\classes started by sutan.bahtiar in C:\devops\repo\java\kubelet-metrics-connector)
+2025-06-08 15:08:36.694  INFO 21020 --- [main] c.g.s.KubeletMetricsConnector            : No active profile set, falling back to 1 default profile: "default"
+2025-06-08 15:08:40.415  INFO 21020 --- [main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 9075
+2025-06-08 15:08:40.430  INFO 21020 --- [main] c.g.s.KubeletMetricsConnector            : Started KubeletMetricsConnector in 4.705 seconds (JVM running for 5.526)

@@ -5,7 +5,7 @@ package com.github.sutanbahtiar.router;
  */
 
 import com.github.sutanbahtiar.constants.RouteUrl;
-import com.github.sutanbahtiar.handler.KubeletMetricHandler;
+import com.github.sutanbahtiar.handler.KubeletMetricSandboxHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,13 +17,13 @@ import java.util.function.Consumer;
 
 @Configuration
 @RequiredArgsConstructor
-public class KubeletMetricsRouter {
-    private final KubeletMetricHandler handler;
+public class KubeletMetricsSandboxRouter {
+    private final KubeletMetricSandboxHandler handler;
 
     @Bean
-    public RouterFunction<ServerResponse> routerFunction() {
+    public RouterFunction<ServerResponse> routerSandboxFunction() {
         return RouterFunctions.route()
-                .path(RouteUrl.BASE_URL, getRoute())
+                .path(RouteUrl.BASE_URL_SANDBOX, getRoute())
                 .build();
     }
 

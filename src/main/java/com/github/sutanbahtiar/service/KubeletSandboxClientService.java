@@ -6,7 +6,7 @@ package com.github.sutanbahtiar.service;
 
 import reactor.core.publisher.Mono;
 
-public interface KubeletClientService {
+public interface KubeletSandboxClientService {
 
     Mono<Object> callGetMetrics(String logId);
 

@@ -19,11 +19,13 @@ public class AppConfig {
     @Configuration
     @ConfigurationProperties("app.config.kubelet")
     public static class Kubelet {
-        private String baseUrl;
+        private String baseSandboxUrl;
+        private String baseProductionUrl;
         private String metricsUrl;
         private String metricsCadvisorUrl;
         private String metricsResourceUrl;
-        private String token;
+        private String sandboxToken;
+        private String productionToken;
     }
 
     @Data

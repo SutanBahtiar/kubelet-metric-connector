@@ -4,7 +4,7 @@ package com.github.sutanbahtiar.handler;
  * @author sutan.bahtiar@gmail.com
  */
 
-import com.github.sutanbahtiar.service.KubeletClientService;
+import com.github.sutanbahtiar.service.KubeletSandboxClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -14,12 +14,13 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class KubeletMetricHandler {
-    private final KubeletClientService clientService;
+public class KubeletMetricSandboxHandler {
+    private final KubeletSandboxClientService clientService;
 
     public Mono<ServerResponse> getMetrics(ServerRequest serverRequest) {
         final String logId = String.valueOf(UUID.randomUUID());
@@ -28,7 +29,8 @@ public class KubeletMetricHandler {
                 .callGetMetrics(logId)
                 .flatMap(response -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(response));
+                        .bodyValue(response))
+                .doOnSuccess(getOnSuccess(logId));
     }
 
     public Mono<ServerResponse> getMetricsCadvisor(ServerRequest serverRequest) {
@@ -38,7 +40,8 @@ public class KubeletMetricHandler {
                 .callGetMetricsCadvisor(logId)
                 .flatMap(response -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(response));
+                        .bodyValue(response))
+                .doOnSuccess(getOnSuccess(logId));
     }
 
     public Mono<ServerResponse> getMetricsResource(ServerRequest serverRequest) {
@@ -48,6 +51,12 @@ public class KubeletMetricHandler {
                 .callGetMetricsResource(logId)
                 .flatMap(response -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(response));
+                        .bodyValue(response))
+                .doOnSuccess(getOnSuccess(logId));
+    }
+
+    private static Consumer<ServerResponse> getOnSuccess(String logId) {
+        return serverResponse -> log.info("{}, status: {}",
+                logId, serverResponse.statusCode());
     }
 }

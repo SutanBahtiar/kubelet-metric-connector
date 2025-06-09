@@ -1,15 +1,13 @@
-package com.github.sutanbahtiar.service;
+package com.github.sutanbahtiar.helper;
 
 /*
- * @author sutan.bahtiar@gmail.com
+ * @created 08/06/2025 - 2:37 PM
+ * @author sutan.bahtiar@brids.co.id
  */
 
-import com.github.sutanbahtiar.config.AppConfig;
 import com.github.sutanbahtiar.constants.RequestHeaders;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -18,35 +16,26 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Mono;
 
 @Log4j2
-@Service
-@RequiredArgsConstructor
-public class KubeletClientServiceImpl implements KubeletClientService {
+public class WebClientHelper {
+
     private final WebClient webClient;
-    private final AppConfig appConfig;
+    private final String token;
 
-    @Override
-    public Mono<Object> callGetMetrics(String logId) {
-        final String path = appConfig.getKubelet().getMetricsUrl();
-        return get(logId, path);
+    public WebClientHelper(WebClient webClient,
+                           String token) {
+        this.webClient = webClient;
+        this.token = token;
     }
 
-    @Override
-    public Mono<Object> callGetMetricsCadvisor(String logId) {
-        final String path = appConfig.getKubelet().getMetricsCadvisorUrl();
-        return get(logId, path);
-    }
-
-    @Override
-    public Mono<Object> callGetMetricsResource(String logId) {
-        final String path = appConfig.getKubelet().getMetricsResourceUrl();
-        return get(logId, path);
-    }
-
-    private Mono<Object> get(String logId,
-                             String path) {
+    private MultiValueMap<String, String> getHeader() {
         final MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-        header.add(RequestHeaders.AUTHORIZATION, RequestHeaders.BEARER + appConfig.getKubelet().getToken());
+        header.add(RequestHeaders.AUTHORIZATION, RequestHeaders.BEARER + token);
+        return header;
+    }
 
+    protected Mono<Object> get(String logId,
+                               String path) {
+        final MultiValueMap<String, String> header = getHeader();
         return webClient.get()
                 .uri(path)
                 .headers(httpHeaders -> httpHeaders.addAll(header))
@@ -55,17 +44,6 @@ public class KubeletClientServiceImpl implements KubeletClientService {
                         return clientResponse.bodyToMono(String.class);
 
                     return createException(logId, clientResponse);
-                });
-    }
-
-    private Mono<Object> responseToString(String logId,
-                                          String path,
-                                          ClientResponse clientResponse) {
-        return clientResponse.bodyToMono(String.class)
-                .flatMap(response -> {
-                    log.info("{}, Path: {}, Response Body: {}",
-                            logId, path, response);
-                    return Mono.just(response);
                 });
     }
 
@@ -83,7 +61,7 @@ public class KubeletClientServiceImpl implements KubeletClientService {
                         logErrorResponse(logId, clientResponse, e);
                         logErrorBody(logId, clientResponse, e);
                         return Mono.error(new
-                                KubeletClientServiceException(clientResponse.statusCode(), e.getResponseBodyAsString()));
+                                WebClientHelperException(clientResponse.statusCode(), e.getResponseBodyAsString()));
                     });
 
         return clientResponse.createException()
@@ -93,7 +71,7 @@ public class KubeletClientServiceImpl implements KubeletClientService {
                     if (!e.getResponseBodyAsString().isBlank())
                         logErrorBody(logId, clientResponse, e);
                     return Mono.error(new
-                            KubeletClientServiceException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+                            WebClientHelperException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
                 });
     }
 
