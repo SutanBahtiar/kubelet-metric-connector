@@ -15,6 +15,15 @@ curl -k \
         
 # reverse proxy
 location /kubelet-metrics/ {
-    https://localhost:9075/kubelet-metrics/
+        https://localhost:9075/kubelet-metrics/
 }        
-```
+
+
+# reverse proxy
+set $sandbox_token tokenvalue;
+
+location /sandbox/ {
+        proxy_set_header Authorization "Bearer $sandbox_token";
+        proxy_pass https://localhost:10250/;
+        proxy_ssl_verify off;
+}
